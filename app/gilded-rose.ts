@@ -10,17 +10,19 @@ export class Item {
   }
 }
 
-function decreaseQuality(item: Item) {
-  item.quality = item.quality - 1
-}
+const decreaseQuality = (item: Item) => item.quality = item.quality - 1
 
-function decreaseSellIn(item: Item) {
-  item.sellIn = item.sellIn - 1;
-}
+const decreaseSellIn = (item: Item) => item.sellIn = item.sellIn - 1
 
-function increaseQuality(item: Item) {
-  item.quality = item.quality + 1
-}
+const increaseQuality = (item: Item) => item.quality = item.quality + 1
+
+const belowMaximumQuality = (item: Item) => item.quality < 50
+
+const expiresInLessThan = (item: Item, days: number) => item.sellIn < days
+
+const isValuable = (item: Item) => item.quality > 0
+
+const hasExpired = (item: Item) => item.sellIn < 0
 
 export class GildedRose {
   items: Array<Item>;
@@ -34,36 +36,36 @@ export class GildedRose {
       if (item.name === 'Sulfuras, Hand of Ragnaros') return;
 
       if (item.name === 'Aged Brie') {
-        if (item.quality < 50) {
+        if (belowMaximumQuality(item)) {
           increaseQuality(item);
         }
       } else if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
-        if (item.quality < 50) {
+        if (belowMaximumQuality(item)) {
           increaseQuality(item);
-          if (item.sellIn < 11 && item.quality < 50) {
+          if (expiresInLessThan(item, 11) && belowMaximumQuality(item)) {
             increaseQuality(item);
           }
-          if (item.sellIn < 6 && item.quality < 50) {
+          if (expiresInLessThan(item, 6) && belowMaximumQuality(item)) {
             increaseQuality(item);
           }
         }
-      } else if (item.quality > 0) {
+      } else if (isValuable(item)) {
         decreaseQuality(item);
       }
 
       decreaseSellIn(item);
 
-      if (item.sellIn < 0) {
+      if (hasExpired(item)) {
         if (item.name === 'Aged Brie') {
-          if (item.quality < 50) {
+          if (belowMaximumQuality(item)) {
             increaseQuality(item);
           }
         } else {
           if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
-            item.quality = item.quality - item.quality
+            item.quality = 0;
           } else {
-            if (item.quality > 0) {
-              decreaseQuality(item)
+            if (isValuable(item)) {
+              decreaseQuality(item);
             }
           }
         }
