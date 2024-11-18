@@ -24,6 +24,10 @@ const isValuable = (item: Item) => item.quality > 0
 
 const hasExpired = (item: Item) => item.sellIn < 0
 
+const SULFURAS = 'Sulfuras, Hand of Ragnaros';
+const BRIE = 'Aged Brie';
+const PASSES = 'Backstage passes to a TAFKAL80ETC concert';
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -33,13 +37,13 @@ export class GildedRose {
 
   updateQuality() {
     this.items.forEach((item) => {
-      if (item.name === 'Sulfuras, Hand of Ragnaros') return;
+      if (item.name === SULFURAS) return;
 
-      if (item.name === 'Aged Brie') {
+      if (item.name === BRIE) {
         if (belowMaximumQuality(item)) {
           increaseQuality(item);
         }
-      } else if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
+      } else if (item.name === PASSES) {
         if (belowMaximumQuality(item)) {
           increaseQuality(item);
           if (expiresInLessThan(item, 11) && belowMaximumQuality(item)) {
@@ -56,12 +60,12 @@ export class GildedRose {
       decreaseSellIn(item);
 
       if (hasExpired(item)) {
-        if (item.name === 'Aged Brie') {
+        if (item.name === BRIE) {
           if (belowMaximumQuality(item)) {
             increaseQuality(item);
           }
         } else {
-          if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
+          if (item.name === PASSES) {
             item.quality = 0;
           } else {
             if (isValuable(item)) {
