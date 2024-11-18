@@ -60,21 +60,22 @@ export class GildedRose {
             increaseQuality(item);
           }
         }
+
+        decreaseSellIn(item);
+
+        if (hasExpired(item)) {
+          item.quality = 0;
+        }
+
       } else if (isValuable(item)) {
         decreaseQuality(item);
       }
 
-      if (item.name !== BRIE) {
+      if (item.name !== BRIE && item.name !== PASSES) {
         decreaseSellIn(item);
 
-        if (hasExpired(item)) {
-          if (item.name === PASSES) {
-            item.quality = 0;
-          } else {
-            if (isValuable(item)) {
-              decreaseQuality(item);
-            }
-          }
+        if (hasExpired(item) && isValuable(item)) {
+          decreaseQuality(item);
         }
       }
     })
