@@ -43,6 +43,13 @@ export class GildedRose {
         if (belowMaximumQuality(item)) {
           increaseQuality(item);
         }
+
+        decreaseSellIn(item);
+
+        if (hasExpired(item) && belowMaximumQuality(item)) {
+          increaseQuality(item);
+        }
+
       } else if (item.name === PASSES) {
         if (belowMaximumQuality(item)) {
           increaseQuality(item);
@@ -57,14 +64,10 @@ export class GildedRose {
         decreaseQuality(item);
       }
 
-      decreaseSellIn(item);
+      if (item.name !== BRIE) {
+        decreaseSellIn(item);
 
-      if (hasExpired(item)) {
-        if (item.name === BRIE) {
-          if (belowMaximumQuality(item)) {
-            increaseQuality(item);
-          }
-        } else {
+        if (hasExpired(item)) {
           if (item.name === PASSES) {
             item.quality = 0;
           } else {
