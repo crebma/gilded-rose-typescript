@@ -7,5 +7,11 @@ describe('Gilded Rose', () => {
       const items = gildedRose.updateQuality();
       expect(items[0].quality).toBe(4);
     });
+
+    it('should degrade twice as fast when expired', () => {
+      const gildedRose = new GildedRose([new Item(CONJURED, 0, 6)]);
+      const items = gildedRose.updateQuality();
+      expect(items[0].quality).toBe(2);
+    });
   });
 });
