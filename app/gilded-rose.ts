@@ -68,13 +68,13 @@ export class GildedRose {
       } else {
         if (isValuable(item)) {
           decreaseQuality(item);
+
+          if (expiresInLessThan(item, 1) && isValuable(item)) {
+            decreaseQuality(item);
+          }
         }
 
         decreaseSellIn(item);
-
-        if (hasExpired(item) && isValuable(item)) {
-          decreaseQuality(item);
-        }
       }
     })
 
