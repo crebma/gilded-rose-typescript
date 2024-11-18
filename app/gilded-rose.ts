@@ -47,8 +47,6 @@ export class GildedRose {
             increaseQuality(item);
           }
         }
-
-        decreaseSellIn(item);
       } else if (item.name === PASSES) {
         if (expiresInLessThan(item, 1)) {
           item.quality = 0;
@@ -63,8 +61,6 @@ export class GildedRose {
             increaseQuality(item);
           }
         }
-
-        decreaseSellIn(item);
       } else {
         if (isValuable(item)) {
           decreaseQuality(item);
@@ -73,9 +69,9 @@ export class GildedRose {
             decreaseQuality(item);
           }
         }
-
-        decreaseSellIn(item);
       }
+
+      decreaseSellIn(item);
     })
 
     return this.items;
