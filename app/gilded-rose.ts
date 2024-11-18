@@ -14,7 +14,7 @@ const decreaseQuality = (item: Item, quality: number) => item.quality = item.qua
 
 const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellIn - quality;
 
-const increaseQuality = (item: Item, quality: number) => item.quality = item.quality + quality;
+const increaseQuality = (item: Item, quality: number) => item.quality = Math.min(50, item.quality + quality);
 
 const belowQuality = (item: Item, quality: number) => item.quality < quality;
 
@@ -50,16 +50,13 @@ export class GildedRose {
       } else if (item.name === PASSES) {
         if (expiresToday(item)) {
           item.quality = 0;
-        } else if (belowQuality(item, 50)) {
-          increaseQuality(item, 1);
+        } else {
+          let amount = 0;
+          if (belowQuality(item, 50)) amount++;
+          if (expiresInDays(item, 10) && belowQuality(item, 49)) amount++;
+          if (expiresInDays(item, 5) && belowQuality(item, 48)) amount++;
 
-          if (expiresInDays(item, 10) && belowQuality(item, 50)) {
-            increaseQuality(item, 1);
-          }
-
-          if (expiresInDays(item, 5) && belowQuality(item, 50)) {
-            increaseQuality(item, 1);
-          }
+          increaseQuality(item, amount);
         }
       } else {
         let amount = 0;
