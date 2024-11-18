@@ -10,19 +10,17 @@ export class Item {
   }
 }
 
-const decreaseQuality = (item: Item) => item.quality = item.quality - 1
+const decreaseQuality = (item: Item, quality: number) => item.quality = item.quality - quality
 
-const decreaseSellIn = (item: Item) => item.sellIn = item.sellIn - 1
+const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellIn - quality
 
-const increaseQuality = (item: Item) => item.quality = item.quality + 1
+const increaseQuality = (item: Item, quality: number) => item.quality = item.quality + quality
 
-const belowMaximumQuality = (item: Item) => item.quality < 50
+const belowQuality = (item: Item, quality: number) => item.quality < quality
 
 const expiresInLessThan = (item: Item, days: number) => item.sellIn < days
 
-const isValuable = (item: Item) => item.quality > 0
-
-const hasExpired = (item: Item) => item.sellIn < 0
+const aboveQuality = (item: Item, quality: number) => item.quality > quality
 
 const SULFURAS = 'Sulfuras, Hand of Ragnaros';
 const BRIE = 'Aged Brie';
@@ -40,38 +38,38 @@ export class GildedRose {
       if (item.name === SULFURAS) return;
 
       if (item.name === BRIE) {
-        if (belowMaximumQuality(item)) {
-          increaseQuality(item);
+        if (belowQuality(item, 50)) {
+          increaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 1) && belowMaximumQuality(item)) {
-            increaseQuality(item);
+          if (expiresInLessThan(item, 1) && belowQuality(item, 50)) {
+            increaseQuality(item, 1);
           }
         }
       } else if (item.name === PASSES) {
         if (expiresInLessThan(item, 1)) {
           item.quality = 0;
-        } else if (belowMaximumQuality(item)) {
-          increaseQuality(item);
+        } else if (belowQuality(item, 50)) {
+          increaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 11) && belowMaximumQuality(item)) {
-            increaseQuality(item);
+          if (expiresInLessThan(item, 11) && belowQuality(item, 50)) {
+            increaseQuality(item, 1);
           }
 
-          if (expiresInLessThan(item, 6) && belowMaximumQuality(item)) {
-            increaseQuality(item);
+          if (expiresInLessThan(item, 6) && belowQuality(item, 50)) {
+            increaseQuality(item, 1);
           }
         }
       } else {
-        if (isValuable(item)) {
-          decreaseQuality(item);
+        if (aboveQuality(item, 0)) {
+          decreaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 1) && isValuable(item)) {
-            decreaseQuality(item);
+          if (expiresInLessThan(item, 1) && aboveQuality(item, 0)) {
+            decreaseQuality(item, 1);
           }
         }
       }
 
-      decreaseSellIn(item);
+      decreaseSellIn(item, 1);
     })
 
     return this.items;
