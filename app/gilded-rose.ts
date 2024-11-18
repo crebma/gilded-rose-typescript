@@ -42,14 +42,13 @@ export class GildedRose {
       if (item.name === BRIE) {
         if (belowMaximumQuality(item)) {
           increaseQuality(item);
+
+          if (expiresInLessThan(item, 1) && belowMaximumQuality(item)) {
+            increaseQuality(item);
+          }
         }
 
         decreaseSellIn(item);
-
-        if (hasExpired(item) && belowMaximumQuality(item)) {
-          increaseQuality(item);
-        }
-
       } else if (item.name === PASSES) {
         if (expiresInLessThan(item, 1)) {
           item.quality = 0;
