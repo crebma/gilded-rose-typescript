@@ -62,13 +62,11 @@ export class GildedRose {
           }
         }
       } else {
-        if (aboveQuality(item, 0)) {
-          decreaseQuality(item, 1);
+        let amount = 0;
+        if (aboveQuality(item, 0)) amount++;
+        if (expiresToday(item) && aboveQuality(item, 1)) amount++;
 
-          if (expiresToday(item) && aboveQuality(item, 0)) {
-            decreaseQuality(item, 1);
-          }
-        }
+        decreaseQuality(item, amount);
       }
 
       decreaseSellIn(item, 1);
