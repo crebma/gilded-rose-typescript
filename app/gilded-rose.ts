@@ -10,7 +10,7 @@ export class Item {
   }
 }
 
-const decreaseQuality = (item: Item, quality: number) => item.quality = item.quality - quality;
+const decreaseQuality = (item: Item, quality: number) => item.quality = Math.max(0, item.quality - quality);
 
 const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellIn - quality;
 
@@ -22,11 +22,12 @@ const expiresInDays = (item: Item, days: number) => item.sellIn <= days;
 
 const aboveQuality = (item: Item, quality: number) => item.quality > quality;
 
-const expiresToday = (item: Item) => expiresInDays(item, 0);
+const expired = (item: Item) => expiresInDays(item, 0);
 
 const SULFURAS = 'Sulfuras, Hand of Ragnaros';
 const BRIE = 'Aged Brie';
 const PASSES = 'Backstage passes to a TAFKAL80ETC concert';
+export const CONJURED = 'Conjured Mana Cake';
 
 export class GildedRose {
   items: Array<Item>;
@@ -42,11 +43,11 @@ export class GildedRose {
       if (item.name === BRIE) {
         let amount = 0;
         if (belowQuality(item, 50)) amount++;
-        if (expiresToday(item) && belowQuality(item, 50)) amount++;
+        if (expired(item) && belowQuality(item, 50)) amount++;
 
         increaseQuality(item, amount);
       } else if (item.name === PASSES) {
-        if (expiresToday(item)) {
+        if (expired(item)) {
           item.quality = 0;
         } else {
           let amount = 0;
@@ -59,7 +60,8 @@ export class GildedRose {
       } else {
         let amount = 0;
         if (aboveQuality(item, 0)) amount++;
-        if (expiresToday(item) && aboveQuality(item, 1)) amount++;
+        if (expired(item) && aboveQuality(item, 1)) amount++;
+        if (item.name === CONJURED) amount *= 2;
 
         decreaseQuality(item, amount);
       }
