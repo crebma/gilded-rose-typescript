@@ -10,17 +10,19 @@ export class Item {
   }
 }
 
-const decreaseQuality = (item: Item, quality: number) => item.quality = item.quality - quality
+const decreaseQuality = (item: Item, quality: number) => item.quality = item.quality - quality;
 
-const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellIn - quality
+const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellIn - quality;
 
-const increaseQuality = (item: Item, quality: number) => item.quality = item.quality + quality
+const increaseQuality = (item: Item, quality: number) => item.quality = item.quality + quality;
 
-const belowQuality = (item: Item, quality: number) => item.quality < quality
+const belowQuality = (item: Item, quality: number) => item.quality < quality;
 
-const expiresInLessThan = (item: Item, days: number) => item.sellIn < days
+const expiresInDays = (item: Item, days: number) => item.sellIn <= days;
 
-const aboveQuality = (item: Item, quality: number) => item.quality > quality
+const aboveQuality = (item: Item, quality: number) => item.quality > quality;
+
+const expiresToday = (item: Item) => expiresInDays(item, 0);
 
 const SULFURAS = 'Sulfuras, Hand of Ragnaros';
 const BRIE = 'Aged Brie';
@@ -41,21 +43,21 @@ export class GildedRose {
         if (belowQuality(item, 50)) {
           increaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 1) && belowQuality(item, 50)) {
+          if (expiresToday(item) && belowQuality(item, 50)) {
             increaseQuality(item, 1);
           }
         }
       } else if (item.name === PASSES) {
-        if (expiresInLessThan(item, 1)) {
+        if (expiresToday(item)) {
           item.quality = 0;
         } else if (belowQuality(item, 50)) {
           increaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 11) && belowQuality(item, 50)) {
+          if (expiresInDays(item, 10) && belowQuality(item, 50)) {
             increaseQuality(item, 1);
           }
 
-          if (expiresInLessThan(item, 6) && belowQuality(item, 50)) {
+          if (expiresInDays(item, 5) && belowQuality(item, 50)) {
             increaseQuality(item, 1);
           }
         }
@@ -63,7 +65,7 @@ export class GildedRose {
         if (aboveQuality(item, 0)) {
           decreaseQuality(item, 1);
 
-          if (expiresInLessThan(item, 1) && aboveQuality(item, 0)) {
+          if (expiresToday(item) && aboveQuality(item, 0)) {
             decreaseQuality(item, 1);
           }
         }
