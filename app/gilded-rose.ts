@@ -16,11 +16,7 @@ const decreaseSellIn = (item: Item, quality: number) => item.sellIn = item.sellI
 
 const increaseQuality = (item: Item, quality: number) => item.quality = Math.min(50, item.quality + quality);
 
-const belowQuality = (item: Item, quality: number) => item.quality < quality;
-
 const expiresInDays = (item: Item, days: number) => item.sellIn <= days;
-
-const aboveQuality = (item: Item, quality: number) => item.quality > quality;
 
 const expired = (item: Item) => item.sellIn <= 0;
 
