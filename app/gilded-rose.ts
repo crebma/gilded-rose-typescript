@@ -57,9 +57,8 @@ export class GildedRose {
           increaseQuality(item, amount);
         }
       } else {
-        let amount = 0;
-        if (aboveQuality(item, 0)) amount++;
-        if (expired(item) && aboveQuality(item, 1)) amount++;
+        let amount = 1;
+        if (expired(item)) amount++;
         if (item.name === CONJURED) amount *= 2;
 
         decreaseQuality(item, amount);
