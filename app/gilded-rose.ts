@@ -22,7 +22,7 @@ const expiresInDays = (item: Item, days: number) => item.sellIn <= days;
 
 const aboveQuality = (item: Item, quality: number) => item.quality > quality;
 
-const expired = (item: Item) => expiresInDays(item, 0);
+const expired = (item: Item) => item.sellIn <= 0;
 
 const SULFURAS = 'Sulfuras, Hand of Ragnaros';
 const BRIE = 'Aged Brie';
@@ -50,10 +50,9 @@ export class GildedRose {
         if (expired(item)) {
           item.quality = 0;
         } else {
-          let amount = 0;
-          if (belowQuality(item, 50)) amount++;
-          if (expiresInDays(item, 10) && belowQuality(item, 49)) amount++;
-          if (expiresInDays(item, 5) && belowQuality(item, 48)) amount++;
+          let amount = 1;
+          if (expiresInDays(item, 10)) amount++;
+          if (expiresInDays(item, 5)) amount++;
 
           increaseQuality(item, amount);
         }
