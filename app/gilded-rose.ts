@@ -41,9 +41,8 @@ export class GildedRose {
       if (item.name === SULFURAS) return;
 
       if (item.name === BRIE) {
-        let amount = 0;
-        if (belowQuality(item, 50)) amount++;
-        if (expired(item) && belowQuality(item, 50)) amount++;
+        let amount = 1;
+        if (expired(item)) amount++;
 
         increaseQuality(item, amount);
       } else if (item.name === PASSES) {
